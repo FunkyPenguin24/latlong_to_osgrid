@@ -1,3 +1,3 @@
-## [1.0.0] - TODO: Add release date.
+## [1.0.0] - 23/08/2020
 
 * Initial release

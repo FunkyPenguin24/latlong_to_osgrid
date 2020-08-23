@@ -1,5 +1,5 @@
 name: latlong_to_osgrid
-description: This package turns given latitude and longitude coordinates into an 12 digit OS Grid Reference and vice versa. The coordinates can be given in decimal format or degrees, minutes and seconds.
+description: A dart package to translate given latitude and longitude coordinates into an 12 digit OS Grid Reference and vice versa.
 version: 1.0.0
 homepage: https://github.com/FunkyPenguin24/latlong_to_osgrid
 
