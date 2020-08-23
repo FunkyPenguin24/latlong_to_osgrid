@@ -53,7 +53,7 @@ class YourClass {
 
     void yourFunction(double lat, double long) {
         var result = converter.getOSGBfromDec(lat, long);
-        print(${result.easting} ${result.northing});
+        print("${result.easting} ${result.northing}");
     }
 
 }
