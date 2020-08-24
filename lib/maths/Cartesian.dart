@@ -1,7 +1,7 @@
 import 'dart:math' as Math;
 import 'package:vector_math/vector_math.dart';
 
-import 'LatLong.dart';
+import 'package:latlong_to_osgrid/latlong_to_osgrid.dart';
 
 class Cartesian extends Vector3 {
 

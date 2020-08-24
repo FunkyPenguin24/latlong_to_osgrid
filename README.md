@@ -7,7 +7,7 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.0.0
+    latlong_to_osgrid: ^1.1.0
 ```
 
 ## Usage
@@ -23,17 +23,6 @@ class YourClass {
 
 }
 
-```
-
-The LatLongConverter object is used to get OS Grid References from Latitudes and Longitudes and vice versa. In doing this, it handles OSRef and LatLong objects that store their relevant attributes.
-
-If you would like to instantiate a custom OSRef or LatLong object, you must import its class as follows.
-OSRef objects must be given an easting and northing upon creation.
-LatLong objects must be given a latitude, longitude, height and datum upon creation (import `Datums.dart` as below)
-
-```dart
-import 'package:latlong_to_osgrid/maths/OSRef.dart'; //for the OSRef object
-import 'package:latlong_to_osgrid/maths/LatLong.dart'; //for the LatLong object
 ```
 
 ## Getting OS Grid from Lat and Long
@@ -52,7 +41,13 @@ class YourClass {
     LatLongConverter converter = new LatLongConverter();
 
     void yourFunction(double lat, double long) {
-        var result = converter.getOSGBfromDec(lat, long);
+        OSRef result = converter.getOSGBfromDec(lat, long);
+        print("${result.easting} ${result.northing}");
+    }
+
+    //you can also define your own latitude and longitude object
+    void yourOtherFunction(LatLong ll) {
+        OSRef result = converter.getOSGBfromDec(ll.lat, ll.long);
         print("${result.easting} ${result.northing}");
     }
 
@@ -71,7 +66,7 @@ class YourClass {
     LatLongConverter converter = new LatLongConverter();
 
     void yourFunction(var latDeg, var latMin, var latSec, var longDeg, var longMin, var longSec) {
-        var result = converter.getOSGBfromDms(latDeg, latMin, latSec, longDeg, longMin, longSec);
+        OSRef result = converter.getOSGBfromDms(latDeg, latMin, latSec, longDeg, longMin, longSec);
         print("${result.easting} ${result.northing}");
     }
 
@@ -91,7 +86,13 @@ class YourClass {
     LatLongConverter converter = new LatLongConverter();
 
     void yourFunction(var easting, var northing) {
-        var result = converter.getLatLongFromOSGB(easting, northing);
+        LatLong result = converter.getLatLongFromOSGB(easting, northing);
+        print("${result.lat} ${result.long}");
+    }
+
+    //you can also define your own OSRef object
+    void yourOtherFunction(OSRef os) {
+        LatLong result = converter.getLatLongFromOSGB(os.easting, os.northing);
         print("${result.lat} ${result.long}");
     }
 
@@ -111,7 +112,7 @@ class YourClass {
     LatLongConverter converter = new LatLongConverter();
 
     void yourFunction(double lat, double long) {
-        var result = converter.getOSGBfromDec(lat, long, Datums.NAD27);
+        OSRef result = converter.getOSGBfromDec(lat, long, Datums.NAD27);
         print("${result.easting} ${result.northing}");
     }
 
