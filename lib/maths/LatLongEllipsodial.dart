@@ -7,11 +7,16 @@ import 'Dms.dart';
 
 class LatLongEllipsodial {
 
+  ///The datum that the latitude and longitude coordinates use
   var datum = Datums.WGS84;
+  ///The latitude value of the coordinate
   var lat;
+  ///The longitude value of the coordinate
   var long;
+  ///The height (or altitude) of the coordinate
   var height;
 
+  ///The different ellipsoids that are used by each datum. These are used when converting cartesian coordinates between datums.
   final ellipsoids = {
     "WGS84":{ "a": 6378137, "b": 6356752.314245, "f": 1/298.257223563 },
     "Airy1830":{"a": 6377563.396, "b": 6356256.909, "f": 1/299.3249646 },
@@ -24,6 +29,8 @@ class LatLongEllipsodial {
     "WGS72":         { "a": 6378135,     "b": 6356750.5,      "f": 1/298.26        },
   };
 
+  ///The different datums used around the world. These contain the ellipsoid that each datum uses and the transform that is used on each latitude and longitude.
+  ///I'm sure that there are datums that aren't listed here, if you would like a datum included that isn't listed please get in touch with the ellipsoid and transform parameters.
   final datums = {
     "OSGB36":{ "ellipsoid": "Airy1830", "transform": [ -446.448, 125.157, -542.060,  20.4894, -0.1502,  -0.2470,  -0.8421   ] },
     "WGS84":{ "ellipsoid": "WGS84", "transform": [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] },
@@ -69,13 +76,15 @@ class LatLongEllipsodial {
         "datum" : datum,
       };
 
+  ///Returns the list of ellipsoids
   getEllipsoids() => ellipsoids;
+  ///Returns the list of datums
   getDatums() => datums;
-
+  ///Returns this object's latitude value
   getLat() => lat;
-
+  ///Returns this object's longitude value
   getLon() => long;
-
+  ///Returns this object's height value
   getHeight() => height;
 
   ///Converts the lat long values to cartesian coordinates

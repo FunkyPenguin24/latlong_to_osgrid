@@ -7,19 +7,34 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.1.1
+    latlong_to_osgrid: ^1.2.1
 ```
 
 ## Usage
 
-Simply import the package and create a new LatLongConverter object to get going.
+Simply import the package as below and you can get going.
 
 ```dart
 import 'package:latlong_to_osgrid/latlong_to_osgrid.dart'
 
 class YourClass {
 
-    LatLongConverter converter = new LatLongConverter();
+    //you can use the built in converter if you don't want to deal with OSRef and LatLong objects
+    //see below for more examples using the converter
+    void usingConverter() {
+        LatLongConverter converter = new LatLongConverter();
+        OSRef result = converter.getOSGBFromDec(53.9623, -1.0819);
+        print("${result.numericalRef}"); //will output the easting and northing (460334 452192)
+        print("${result.letterRef}"); //will output the letter pair reference (SE 60334 52192)
+    }
+
+    //or you can use OSRef and LatLong objects themselves for conversion
+    void usingObjects() {
+        LatLong latL = new LatLong(53.9623, -1.0819, 0, Datums.WGS84);
+        OSRef osReference = latL.toOsGrid();
+        print("${result.numericalRef}"); //will output the easting and northing as above
+        print("${result.letterRef}"); //will output the letter pair reference as above
+    }
 
 }
 
@@ -77,6 +92,8 @@ class YourClass {
 
 The following function returns a LatLong object which has the `lat`, `long`, `height`, and `datum` attributes. The latitude and longitude that result from this function are returned in decimal form. (See below to translate into degrees, minutes and seconds).
 Using the LatLongConverter object, call the `getLatLongFromOSGB()` function with the easting and northing values of the OS Grid Reference.
+It is possible to provide an OS Grid Reference in letter pair format (e.g. TG 51409 13177) rather than giving a separate easting and northing. To do this you can call the `getLatLongFromOSGBLetterRef()` function of the converter.
+If you are creating an OSRef object yourself, you can create it with either an easting and northing or a letter pair reference. Whichever you use, the other is generated upon creation and can be accessed via the `numericalRef` and `letterRef` attributes of the OSRef object.
 
 ```dart
 import 'package:latlong_to_osgrid/latlong_to_osgrid.dart';
@@ -85,14 +102,24 @@ class YourClass {
 
     LatLongConverter converter = new LatLongConverter();
 
-    void yourFunction(var easting, var northing) {
+    void yourFunction(int easting, int northing) {
         LatLong result = converter.getLatLongFromOSGB(easting, northing);
+        print("${result.lat} ${result.long}");
+    }
+
+    void yourFunctionOne(String letterRef) {
+        LatLong result = converter.getLatLongFromOSGBLetterRef(letterRef);
         print("${result.lat} ${result.long}");
     }
 
     //you can also define your own OSRef object
     void yourOtherFunction(OSRef os) {
         LatLong result = converter.getLatLongFromOSGB(os.easting, os.northing);
+        print("${result.lat} ${result.long}");
+    }
+
+    void yourOtherFunctionOne(OSRef os) {
+        LatLong result = converter.getLatLongFromOSGBLetterRef(os.letterRef);
         print("${result.lat} ${result.long}");
     }
 
@@ -166,4 +193,4 @@ class YourClass {
 
 Both the LatLong and OSRef objects have a `toJson()` function that allows them to be converted to JSON objects for easier storage. They also both have `fromJson()` constructors which allows you to use a JSON object with the specified attributes to create them.
 LatLong JSON objects contain the following attributes: `latitude`, `longitude`, `height`, and `datum`.
-OSRef JSON objects contain the following attributes: `easting`, `northing`, `fullRef`, and `datum`.
+OSRef JSON objects contain the following attributes: `easting`, `northing`, `numericalRef`, `letterRef` and `datum`.

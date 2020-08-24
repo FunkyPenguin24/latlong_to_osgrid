@@ -27,8 +27,15 @@ class LatLongConverter {
   }
 
   ///Returns a latitude and longitude value in a given datum (default WGS84) for a given easting and northing value
-  LatLong getLatLongFromOSGB(double easting, double northing, [var datum]) {
+  LatLong getLatLongFromOSGB(int easting, int northing, [var datum]) {
     OSRef osRef = new OSRef(easting, northing);
+    LatLong latLong = osRef.toLatLon(datum);
+    return latLong;
+  }
+
+  ///Returna a latitude and longitude value in a given datum (default WGS84) for a given letter reference value (e.g. TG 51409 13177)
+  LatLong getLatLongFromOSGBLetterRef(String letterRef, [var datum]) {
+    OSRef osRef = new OSRef.fromLetterRef(letterRef);
     LatLong latLong = osRef.toLatLon(datum);
     return latLong;
   }
@@ -130,8 +137,7 @@ class LatLong extends LatLongEllipsodialDatum {
     N = double.parse(N.toStringAsFixed(0));
     E = double.parse(E.toStringAsFixed(0));
 
-    OSRef ref = OSRef(E, N);
-    ref.fullRef = "$E $N";
+    OSRef ref = OSRef(E.toInt(), N.toInt());
 
     return ref;
 
@@ -140,18 +146,37 @@ class LatLong extends LatLongEllipsodialDatum {
 }
 
 class OSRef {
+  ///The datum that the reference will output it's lat and long coordinates in. By default it is the WGS84 datum but this can be overriden when calling the toLatLon() function
   var d = Datums.WGS84;
-  double easting;
-  double northing;
-  String fullRef = "";
+  ///The easting value of the reference
+  int easting;
+  ///The northing value of the reference
+  int northing;
+  ///The full numerical reference. This is the easting and northing separated by a space
+  String numericalRef = "";
+  ///The full letter reference. This can be specified upon creation or generated if the object is created using a separate easting and northing.
+  String letterRef = "";
 
-  ///Creates a new OSRef object with a given easting and northing
-  OSRef(this.easting, this.northing);
+  ///Creates a new OSRef object with a given easting and northing (e.g. 651409, 313177)
+  OSRef(this.easting, this.northing) {
+    this.numericalRef = "$easting $northing";
+    this.letterRef = getLetterRef(easting, northing);
+  }
+
+  ///Creates a new OSRef object with a given letter reference (e.g. TG 51409 13177)
+  OSRef.fromLetterRef(this.letterRef) {
+    var eastingAndNorthing = getEastingNorthing(letterRef);
+    this.easting = eastingAndNorthing[0];
+    this.northing = eastingAndNorthing[1];
+    this.numericalRef = "$easting $northing";
+  }
+
   ///Creates a new OSRef object from a given JSON object
   OSRef.fromJson(Map<String, dynamic> json) {
     this.easting = json["easting"];
     this.northing = json["northing"];
-    this.fullRef = json["fullRef"];
+    this.numericalRef = json["numericalRef"];
+    this.letterRef = json["letterRef"];
     this.d = json["datum"];
   }
 
@@ -160,9 +185,66 @@ class OSRef {
       {
         "easting" : easting,
         "northing" : northing,
-        "fullRef" : fullRef,
+        "numericalRef" : numericalRef,
+        "letterRef": letterRef,
         "datum" : d,
       };
+
+  ///Returns the letter pair reference of a given easting and northing
+  ///For example, a reference with an easting of 651409 and a northing of 313177 equates to a letter pair reference of TG 51409 13177
+  ///The default amount of digits is 10
+  String getLetterRef(int e, int n, [int digits = 10]) {
+    if (![0, 2, 4, 6, 8, 10, 12, 14, 16].contains(digits)) {
+      throw new RangeError("Invalid precision $digits!");
+    }
+    final e100km = (e / 100000).floor();
+    final n100km = (n / 100000).floor();
+
+    var l1 = (19 - n100km) - (19 - n100km) % 5 + ((e100km + 10) / 5).floor();
+    var l2 = (19 - n100km) * 5 % 25 + e100km % 5;
+
+    if (l1 > 7)
+      l1++;
+    if (l2 > 7)
+      l2++;
+
+    final letterPair = String.fromCharCode(l1 + 'A'.codeUnitAt(0)) + String.fromCharCode(l2 + 'A'.codeUnitAt(0));
+
+    e = ((e % 100000) / Math.pow(10, 5 - digits / 2)).floor();
+    n = ((n % 100000) / Math.pow(10, 5 - digits / 2)).floor();
+
+    var eastingString = e.toString().padLeft(digits~/2, '0');
+    var northingString = n.toString().padLeft(digits~/2, '0');
+
+    return "$letterPair $eastingString $northingString";
+  }
+
+  ///Returns the easting and northing of a given letter pair reference
+  ///For example, a letter pair reference of TG 51409 13177 will return an easting of 651409 and a northing of 313177
+  dynamic getEastingNorthing(String gridRef) {
+    var letE = gridRef.toUpperCase().codeUnitAt(0) - 'A'.codeUnitAt(0);
+    var letN = gridRef.toUpperCase().codeUnitAt(1) - 'A'.codeUnitAt(0);
+
+    if (letE > 7)
+      letE--;
+    if (letN > 7)
+      letN--;
+
+    var e = ((letE+3)%5)*5 + (letN%5);
+    var n = (19-(letE/5).floor()*5) - (letN/5).floor();
+
+    gridRef = gridRef.substring(2).replaceAll(' ', '');
+
+    String eastingString = "$e${gridRef.substring(0, gridRef.length~/2)}";
+    String northingString = "$n${gridRef.substring(gridRef.length~/2)}";
+
+    switch (gridRef.length) {
+      case 6: eastingString += '00'; northingString += '00'; break;
+      case 8: eastingString += '0'; northingString += '0'; break;
+    }
+
+    return [int.parse(eastingString), int.parse(northingString)];
+  }
 
   ///Converts the OSRef object (easting and northing given when object is created) into a latitude and longitude of a specified datum
   ///Most widely used datum in Europe is WGS84 (this is what is used by phone GPS)
@@ -242,4 +324,19 @@ class OSRef {
 
   }
 
+}
+
+///Contains variables for all the datums that include their ellipsoid and transform parameters.
+class Datums {
+  static const OSGB36 = { "ellipsoid": "Airy1830", "transform": [ -446.448, 125.157, -542.060,  20.4894, -0.1502,  -0.2470,  -0.8421   ] };
+  static const WGS84 = { "ellipsoid": "WGS84", "transform": [ 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0] };
+  static const ED50 = { "ellipsoid": "Intl1924", "transform": [ 89.5, 93.8, 123.1, -1.2, 0.0, 0.0, 0.156 ] };
+  static const ETRS89 = { "ellipsoid": "GRS80", "transform": [ 0, 0, 0, 0, 0, 0, 0 ] };
+  static const Irl1975 = { "ellipsoid": "AiryModified", "transform": [ -482.530, 130.596, -564.557, -8.150, 1.042, 0.214, 0.631 ] };
+  static const NAD27 = { "ellipsoid": "Clarke1866", "transform": [ 8, -160, -176, 0, 0, 0, 0 ] };
+  static const NAD83 = { "ellipsoid": "GRS80", "transform": [ 0.9956, -1.9103, -0.5215, -0.00062, 0.025915, 0.009426, 0.011599 ] };
+  static const NTF = { "ellipsoid": "Clarke1880IGN", "transform": [ 168, 60, -320, 0, 0, 0, 0 ] };
+  static const Potsdam = { "ellipsoid": "Bessel1841", "transform": [ -582, -105, -414, -8.3, 1.04, 0.35, -3.08 ] };
+  static const TokyoJapan = { "ellipsoid": "Bessel1841", "transform": [ 148, -507, -685, 0, 0, 0, 0 ] };
+  static const WGS72 = { "ellipsoid": "WGS72", "transform": [ 0, 0, -4.5, -0.22, 0, 0, 0.554 ] };
 }
