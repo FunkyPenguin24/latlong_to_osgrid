@@ -1,3 +1,7 @@
+## [1.1.1] - 24/08/2020
+
+* Created support to convert OSRef and LatLong objects into JSON and vice versa for ease of storage
+
 ## [1.1.0] - 24/08/2020
 
 * Moved LatLong and OSRef objects to main dart file

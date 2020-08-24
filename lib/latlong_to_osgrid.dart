@@ -68,6 +68,8 @@ class LatLong extends LatLongEllipsodialDatum {
   LatLong(la, lo, h, d) : super(la, lo, h, d);
   ///Creates a new lat and long object with a given latitude and longitude given in degrees, minutes and seconds, and height (datum is optional but by default is WGS84)
   LatLong.fromDms(latdeg, latmin, latsec, longdeg, longmin, longsec, h, d) : super.fromDms(latdeg, latmin, latsec, longdeg, longmin, longsec, h, d);
+  ///Creates a new lat and long object from a given JSON object
+  LatLong.fromJson(json) : super.fromJson(json);
 
   ///This function first converts the lat and long coordinates from the specified datum into the OSGB36 datum
   ///It then puts the new lat and long coordinates through a mathematic algorithm that produces the easting and northing references
@@ -145,6 +147,22 @@ class OSRef {
 
   ///Creates a new OSRef object with a given easting and northing
   OSRef(this.easting, this.northing);
+  ///Creates a new OSRef object from a given JSON object
+  OSRef.fromJson(Map<String, dynamic> json) {
+    this.easting = json["easting"];
+    this.northing = json["northing"];
+    this.fullRef = json["fullRef"];
+    this.d = json["datum"];
+  }
+
+  ///Converts the OSRef into a JSON object
+  Map<String, dynamic> toJson() =>
+      {
+        "easting" : easting,
+        "northing" : northing,
+        "fullRef" : fullRef,
+        "datum" : d,
+      };
 
   ///Converts the OSRef object (easting and northing given when object is created) into a latitude and longitude of a specified datum
   ///Most widely used datum in Europe is WGS84 (this is what is used by phone GPS)

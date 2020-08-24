@@ -7,6 +7,7 @@ class LatLongEllipsodialDatum extends LatLongEllipsodial {
 
   LatLongEllipsodialDatum(lat, lon, height, d) : super(lat, lon, height, d);
   LatLongEllipsodialDatum.fromDms(latdeg, latmin, latsec, longdeg, longmin, longsec, height, d) : super.fromDms(latdeg, latmin, latsec, longdeg, longmin, longsec, height, d);
+  LatLongEllipsodialDatum.fromJson(json) : super.fromJson(json);
 
   ///Converts the lat and long object into a new datum (i.e. from WGS84 into OSGB36 ready to be translated to an OS Grid Reference)
   convertDatum(toDatum) {

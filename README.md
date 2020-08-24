@@ -7,7 +7,7 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.1.0
+    latlong_to_osgrid: ^1.1.1
 ```
 
 ## Usage
@@ -154,10 +154,16 @@ class YourClass {
     }
 
     void DmsToDecimalExample(var latDeg, var latMin, var latSec, var longDeg, var longMin, var longSec) {
-        var latDec = converter.getDecimalFromDegree(latDeg, latMin, latSec);
-        var longDec = converter.getDecimalFromDegree(longDeg, longMin, longSec);
+        double latDec = converter.getDecimalFromDegree(latDeg, latMin, latSec);
+        double longDec = converter.getDecimalFromDegree(longDeg, longMin, longSec);
         print("$latDec $longDec");
     }
 
 }
 ```
+
+## Converting to JSON
+
+Both the LatLong and OSRef objects have a `toJson()` function that allows them to be converted to JSON objects for easier storage. They also both have `fromJson()` constructors which allows you to use a JSON object with the specified attributes to create them.
+LatLong JSON objects contain the following attributes: `latitude`, `longitude`, `height`, and `datum`.
+OSRef JSON objects contain the following attributes: `easting`, `northing`, `fullRef`, and `datum`.

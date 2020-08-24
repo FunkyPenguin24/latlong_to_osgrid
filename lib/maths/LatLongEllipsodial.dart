@@ -52,6 +52,23 @@ class LatLongEllipsodial {
     this.height = h;
   }
 
+  ///Creates a new Lat Long object from a given JSON object
+  LatLongEllipsodial.fromJson(Map<String, dynamic> json) {
+    this.lat = json["latitude"];
+    this.long = json["longitude"];
+    this.height = json["height"];
+    this.datum = json["datums"];
+  }
+
+  ///Converts the LatLong object into JSON (latitude and longitudes are in decimal)
+  Map<String, dynamic> toJson() =>
+      {
+        "latitude" : lat,
+        "longitude" : long,
+        "height" : height,
+        "datum" : datum,
+      };
+
   getEllipsoids() => ellipsoids;
   getDatums() => datums;
 
