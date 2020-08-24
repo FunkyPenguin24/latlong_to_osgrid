@@ -7,7 +7,7 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.2.1
+    latlong_to_osgrid: ^1.2.2
 ```
 
 ## Usage
@@ -32,8 +32,8 @@ class YourClass {
     void usingObjects() {
         LatLong latL = new LatLong(53.9623, -1.0819, 0, Datums.WGS84);
         OSRef osReference = latL.toOsGrid();
-        print("${result.numericalRef}"); //will output the easting and northing as above
-        print("${result.letterRef}"); //will output the letter pair reference as above
+        print("${osReference.numericalRef}"); //will output the easting and northing as above
+        print("${osReference.letterRef}"); //will output the letter pair reference as above
     }
 
 }

@@ -1,10 +1,14 @@
+## [1.2.2] - 24/08/2020
+
+* Fixed issue with readme
+
 ## [1.2.1] - 24/08/2020
 
 * Updated readme
 
 ## [1.2.0] - 24/08/2020
 
-* Added support to for letter pair OS grid references
+* Added support for letter pair OS grid references
 * These can be specified when converting to lat and long, or accessed after conversion
 * When an OSRef object is created using an easting and northing, the package calculates the equivalent letter pair reference, and vice versa
 * Added some comments
