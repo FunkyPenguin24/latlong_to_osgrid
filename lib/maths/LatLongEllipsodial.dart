@@ -1,4 +1,4 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'Datums.dart';
 import 'package:vector_math/vector_math.dart';
 
@@ -95,13 +95,13 @@ class LatLongEllipsodial {
     final a = ellipsoids[datum["ellipsoid"]]!["a"]!;
     final f = ellipsoids[datum["ellipsoid"]]!["f"]!;
 
-    final sinw = Math.sin(w);
-    final cosw = Math.cos(w);
-    final sinl = Math.sin(l);
-    final cosl = Math.cos(l);
+    final sinw = math.sin(w);
+    final cosw = math.cos(w);
+    final sinl = math.sin(l);
+    final cosl = math.cos(l);
 
     final eSq = 2*f - f*f;
-    final v = a / Math.sqrt(1 - eSq*sinw*sinw);
+    final v = a / math.sqrt(1 - eSq*sinw*sinw);
 
     final x = (v+h) * cosw * cosl;
     final y = (v+h) * cosw * sinl;

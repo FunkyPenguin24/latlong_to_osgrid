@@ -1,3 +1,7 @@
+## [1.3.1] - 29/03/2021
+
+* Fixed hints brought up by dart analyzer
+
 ## [1.3.0] - 29/03/2021
 
 * Migrated code to null safety

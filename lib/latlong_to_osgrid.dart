@@ -1,7 +1,6 @@
-import 'maths/Datums.dart';
 import 'maths/LatLongEllipsodialDatum.dart';
 import 'package:vector_math/vector_math.dart';
-import 'dart:math' as Math;
+import 'dart:math' as math;
 
 class LatLongConverter {
 
@@ -99,21 +98,21 @@ class LatLong extends LatLongEllipsodialDatum {
     final n2 = n*n;
     final n3 = n*n*n;
 
-    final cosw = Math.cos(w);
-    final sinw = Math.sin(w);
-    final v = a*F0/Math.sqrt(1-e2*sinw*sinw);
-    final p = a*F0*(1-e2)/Math.pow(1-e2*sinw*sinw, 1.5);
+    final cosw = math.cos(w);
+    final sinw = math.sin(w);
+    final v = a*F0/math.sqrt(1-e2*sinw*sinw);
+    final p = a*F0*(1-e2)/math.pow(1-e2*sinw*sinw, 1.5);
     final N2 = v/p-1;
 
     final Ma = (1+n+(5/4)*n2 + (5/4)*n3) * (w-w0);
-    final Mb = (3*n + 3*n*n + (21/8)*n3) * Math.sin(w-w0) * Math.cos(w+w0);
-    final Mc = ((15/8)*n2 + (15/8)*n3) * Math.sin(2*(w-w0)) * Math.cos(2*(w+w0));
-    final Md = (35/24)*n3 * Math.sin(3*(w-w0)) * Math.cos(3*(w+w0));
+    final Mb = (3*n + 3*n*n + (21/8)*n3) * math.sin(w-w0) * math.cos(w+w0);
+    final Mc = ((15/8)*n2 + (15/8)*n3) * math.sin(2*(w-w0)) * math.cos(2*(w+w0));
+    final Md = (35/24)*n3 * math.sin(3*(w-w0)) * math.cos(3*(w+w0));
     final M = b * F0 * (Ma - Mb + Mc - Md); //meridional arc
 
     final cos3w = cosw*cosw*cosw;
     final cos5w = cos3w*cosw*cosw;
-    final tan2w = Math.tan(w)*Math.tan(w);
+    final tan2w = math.tan(w)*math.tan(w);
     final tan4w = tan2w*tan2w;
 
     final I = M + N0;
@@ -210,8 +209,8 @@ class OSRef {
 
     final letterPair = String.fromCharCode(l1 + 'A'.codeUnitAt(0)) + String.fromCharCode(l2 + 'A'.codeUnitAt(0));
 
-    e = ((e % 100000) / Math.pow(10, 5 - digits / 2)).floor();
-    n = ((n % 100000) / Math.pow(10, 5 - digits / 2)).floor();
+    e = ((e % 100000) / math.pow(10, 5 - digits / 2)).floor();
+    n = ((n % 100000) / math.pow(10, 5 - digits / 2)).floor();
 
     var eastingString = e.toString().padLeft(digits~/2, '0');
     var northingString = n.toString().padLeft(digits~/2, '0');
@@ -275,19 +274,19 @@ class OSRef {
       w = (N-N0-M)/(a*F0) + w;
 
       var Ma = (1 + n + (5/4)*n2 + (5/4)*n3) * (w-w0);
-      var Mb = (3*n + 3*n*n + (21/8)*n3) * Math.sin(w-w0) * Math.cos(w+w0);
-      var Mc = ((15/8)*n2 + (15/8)*n3) * Math.sin(2*(w-w0)) * Math.cos(2*(w+w0));
-      var Md = (35/24)*n3 * Math.sin(3*(w-w0)) * Math.cos(3*(w+w0));
+      var Mb = (3*n + 3*n*n + (21/8)*n3) * math.sin(w-w0) * math.cos(w+w0);
+      var Mc = ((15/8)*n2 + (15/8)*n3) * math.sin(2*(w-w0)) * math.cos(2*(w+w0));
+      var Md = (35/24)*n3 * math.sin(3*(w-w0)) * math.cos(3*(w+w0));
       M = b * F0 * (Ma - Mb + Mc - Md);
     } while ((N-N0-M).abs() >= 0.00001);
 
-    final cosw = Math.cos(w);
-    final sinw = Math.sin(w);
-    final v = a*F0/Math.sqrt(1-e2*sinw*sinw);
-    final p = a*F0*(1-e2)/Math.pow(1-e2*sinw*sinw, 1.5);
+    final cosw = math.cos(w);
+    final sinw = math.sin(w);
+    final v = a*F0/math.sqrt(1-e2*sinw*sinw);
+    final p = a*F0*(1-e2)/math.pow(1-e2*sinw*sinw, 1.5);
     final N2 = v/p-1;
 
-    final tanw = Math.tan(w);
+    final tanw = math.tan(w);
     final tan2w = tanw*tanw;
     final tan4w = tan2w*tan2w;
     final tan6w = tan4w*tan2w;

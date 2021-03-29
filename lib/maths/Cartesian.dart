@@ -1,6 +1,5 @@
-import 'dart:math' as Math;
+import 'dart:math' as math;
 import 'package:vector_math/vector_math.dart';
-
 import 'package:latlong_to_osgrid/latlong_to_osgrid.dart';
 
 class Cartesian extends Vector3 {
@@ -49,24 +48,24 @@ class Cartesian extends Vector3 {
 
     final e2 = 2*f - f*f; //1st eccentricity
     final E2 = e2 / (1-e2); //2nd eccentricity
-    final p = Math.sqrt(x*x + y*y); //distance from minor axis
-    final R = Math.sqrt(p*p + z*z); //polar radius
+    final p = math.sqrt(x*x + y*y); //distance from minor axis
+    final R = math.sqrt(p*p + z*z); //polar radius
 
     //parametric latitude
     final tanB = (b*z)/(a*p) * (1+E2*b/R);
-    final sinB = tanB / Math.sqrt(1+tanB*tanB);
+    final sinB = tanB / math.sqrt(1+tanB*tanB);
     final cosB = sinB / tanB;
 
     //geodetic latitude
-    final double w = cosB.isNaN ? 0 : Math.atan2(z + E2*b*sinB*sinB*sinB, p - e2*a*cosB*cosB*cosB);
+    final double w = cosB.isNaN ? 0 : math.atan2(z + E2*b*sinB*sinB*sinB, p - e2*a*cosB*cosB*cosB);
 
     //longitude
-    final l = Math.atan2(y, x);
+    final l = math.atan2(y, x);
 
     //height above ellipsoid
-    final sinw = Math.sin(w);
-    final cosw = Math.cos(w);
-    final v = a / Math.sqrt(1-e2*sinw*sinw);
+    final sinw = math.sin(w);
+    final cosw = math.cos(w);
+    final v = a / math.sqrt(1-e2*sinw*sinw);
     final h = p*cosw + z*sinw - (a*a/v);
 
     final point = new LatLong(degrees(w), degrees(l), h, datum);
