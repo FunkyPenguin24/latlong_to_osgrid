@@ -43,9 +43,9 @@ class Cartesian extends Vector3 {
   ///Converts the cartesian coordinate to latitude and longitude using a given ellipsoid
   toLatLong(var datum) {
     final ellipsoid = ellipsoids[datum["ellipsoid"]];
-    final a = ellipsoid["a"];
-    final b = ellipsoid["b"];
-    final f = ellipsoid["f"];
+    final a = ellipsoid!["a"]!;
+    final b = ellipsoid["b"]!;
+    final f = ellipsoid["f"]!;
 
     final e2 = 2*f - f*f; //1st eccentricity
     final E2 = e2 / (1-e2); //2nd eccentricity
@@ -58,7 +58,7 @@ class Cartesian extends Vector3 {
     final cosB = sinB / tanB;
 
     //geodetic latitude
-    final w = cosB.isNaN ? 0 : Math.atan2(z + E2*b*sinB*sinB*sinB, p - e2*a*cosB*cosB*cosB);
+    final double w = cosB.isNaN ? 0 : Math.atan2(z + E2*b*sinB*sinB*sinB, p - e2*a*cosB*cosB*cosB);
 
     //longitude
     final l = Math.atan2(y, x);

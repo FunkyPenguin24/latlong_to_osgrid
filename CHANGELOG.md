@@ -1,3 +1,7 @@
+## [1.3.0] - 29/03/2021
+
+* Migrated code to null safety
+
 ## [1.2.2] - 24/08/2020
 
 * Fixed issue with readme

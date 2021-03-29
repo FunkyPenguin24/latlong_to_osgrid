@@ -92,8 +92,8 @@ class LatLongEllipsodial {
     final w = radians(lat);
     final l = radians(long);
     final h = height;
-    final a = ellipsoids[datum["ellipsoid"]]["a"];
-    final f = ellipsoids[datum["ellipsoid"]]["f"];
+    final a = ellipsoids[datum["ellipsoid"]]!["a"]!;
+    final f = ellipsoids[datum["ellipsoid"]]!["f"]!;
 
     final sinw = Math.sin(w);
     final cosw = Math.cos(w);

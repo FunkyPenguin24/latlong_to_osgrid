@@ -149,9 +149,9 @@ class OSRef {
   ///The datum that the reference will output it's lat and long coordinates in. By default it is the WGS84 datum but this can be overriden when calling the toLatLon() function
   var d = Datums.WGS84;
   ///The easting value of the reference
-  int easting;
+  late int easting;
   ///The northing value of the reference
-  int northing;
+  late int northing;
   ///The full numerical reference. This is the easting and northing separated by a space
   String numericalRef = "";
   ///The full letter reference. This can be specified upon creation or generated if the object is created using a separate easting and northing.
