@@ -7,7 +7,7 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.3.1
+    latlong_to_osgrid: ^1.3.2
 ```
 
 ## Usage

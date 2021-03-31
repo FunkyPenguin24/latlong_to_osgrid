@@ -1,3 +1,7 @@
+## [1.3.2] - 31/03/2021
+
+* Changed test dependency to earlier version
+
 ## [1.3.1] - 29/03/2021
 
 * Fixed hints brought up by dart analyzer
