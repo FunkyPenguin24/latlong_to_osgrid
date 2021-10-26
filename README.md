@@ -212,12 +212,12 @@ The coordinates are converted between datums in a three step process, one of whi
 
 ### Translating OSGB36 lat and long to OS Grid Reference
 
-The [Latitude and Longitude object](lib/maths/LatLong.dart) contains the function toOsGrid() which converts it's latitude and longitude coordinates to the OSGB36 datum as above, and then runs them through an algorithm to calculate an easting and northing reference.
+The [Latitude and Longitude object](lib/maths/latlong_to_osgrid.dart#L71) contains the function toOsGrid() which converts it's latitude and longitude coordinates to the OSGB36 datum as above, and then runs them through an algorithm to calculate an easting and northing reference.
 Please see the function toOsGrid() for the full maths.
 
 ### Translating OS Grid Reference to OSGB36
 
-The [Ordnance Survey Reference object](lib/maths/OSRef.dart) contains the function toLatLon() which by converts it's given easting and northing (specified on initialisation) into OSGB36 lat and long then converts them by default to WGS84 coordinates.
+The [Ordnance Survey Reference object](lib/maths/latlong_to_osgrid.dart#L147) contains the function toLatLon() which by converts it's given easting and northing (specified on initialisation) into OSGB36 lat and long then converts them by default to WGS84 coordinates.
 If you're going to use the library in any projects and want to convert OS Grid References to another datum for any reason, you can specify this as a parameter when you call the toLatLon function (no parameter means it'll return WGS84)
 All datums are available through the [Datums file](lib/maths/Datums.dart), simply import that and pass the datums object that you want to convert the reference to (e.g. Datums.WGS84)
 Please see the function toLatLong() for the full maths.
