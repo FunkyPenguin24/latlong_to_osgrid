@@ -7,7 +7,7 @@ This package turns given latitude and longitude coordinates into an 12 digit OS 
 Add this to your app's `pubspec.yaml` file:
 ```
 dependencies:
-    latlong_to_osgrid: ^1.3.2
+    latlong_to_osgrid: ^1.3.3
 ```
 
 ## Usage
@@ -15,7 +15,7 @@ dependencies:
 Simply import the package as below and you can get going.
 
 ```dart
-import 'package:latlong_to_osgrid/latlong_to_osgrid.dart'
+import 'package:latlong_to_osgrid/latlong_to_osgrid.dart';
 
 class YourClass {
 

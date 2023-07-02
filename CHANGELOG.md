@@ -1,3 +1,7 @@
+## [1.3.3] - 02/07/2023
+
+* Added ability to specify target datum when converting to grid
+
 ## [1.3.2] - 31/03/2021
 
 * Changed test dependency to earlier version

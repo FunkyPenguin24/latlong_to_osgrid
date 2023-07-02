@@ -80,8 +80,11 @@ class LatLong extends LatLongEllipsodialDatum {
   ///This function first converts the lat and long coordinates from the specified datum into the OSGB36 datum
   ///It then puts the new lat and long coordinates through a mathematic algorithm that produces the easting and northing references
   ///Returns an OSRef object which contains the easting and northing
-  OSRef toOsGrid() {
-    final point = convertDatum(datums["OSGB36"]);
+  OSRef toOsGrid([dynamic toDatum]) {
+    if (toDatum == null) {
+      toDatum = datums["OSGB36"];
+    }
+    final point = convertDatum(toDatum);
 
     final w = radians(point.lat);
     final l = radians(point.long);
